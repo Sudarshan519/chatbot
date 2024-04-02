@@ -5,6 +5,7 @@ from fastapi.security import HTTPBasic
 from fastapi.templating import Jinja2Templates
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.routing import APIRouter
+import uvicorn
 
 from ai_tools_app.get_user import get_current_username,get_current_user_from_bearer
 from ai_tools_app.models.user import AdminUser
@@ -19,7 +20,7 @@ security = HTTPBasic()
 from typing import Awaitable, Callable
 
 from fastapi import FastAPI
-import firebase_admin
+# import firebase_admin
 # from firebase_admin import credentials
 
 
@@ -36,7 +37,8 @@ def register_startup_event(app: FastAPI) -> Callable[[], Awaitable[None]]:
     @app.on_event('startup')
     async def _startup() -> None:
         # cred = credentials.Certificate("/path/to/cred/file")
-        firebase_admin.initialize_app()
+        # firebase_admin.initialize_app()
+        pass
     return _startup
 
 
@@ -201,3 +203,12 @@ def deleteall(session:Session=Depends(get_session),#current_user:AdminUser=Depen
 @app.get("/users/me")
 def read_current_user(username: Annotated[str, Depends(get_current_user_from_bearer)]):
     return {"username": username}
+
+@app.on_event("startup")
+async def on_startup():  
+    print("start up complete")
+
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)

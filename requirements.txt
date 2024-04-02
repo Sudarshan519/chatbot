@@ -101,3 +101,4 @@ wcwidth==0.2.6
 Werkzeug==2.3.6
 xmltodict==0.13.0
 zeep==4.2.1
+# firebase_admin
