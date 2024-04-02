@@ -112,8 +112,8 @@ async def all_tools(session: Session = Depends(get_session)):
     return session.exec(select(AiTool)).all()
 
 
-@app.get('/export')
-def export_fireabse_json(session: Session = Depends(get_session)):
+# @app.get('/export')
+# def export_fireabse_json(session: Session = Depends(get_session)):
     aitools=[]
     index=1
     with open('backup.json', "r") as file:
