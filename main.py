@@ -24,36 +24,36 @@ from fastapi import FastAPI
 # from firebase_admin import credentials
 
 
-def register_startup_event(app: FastAPI) -> Callable[[], Awaitable[None]]:
-    """Actions to run on app startup.
+# def register_startup_event(app: FastAPI) -> Callable[[], Awaitable[None]]:
+#     """Actions to run on app startup.
 
-    This function uses fastAPI app to store data
-    inthe state, such as db_engine.
+#     This function uses fastAPI app to store data
+#     inthe state, such as db_engine.
 
-    :param app: the fastAPI app.
-    :return: function that actually performs actions.
-    """
+#     :param app: the fastAPI app.
+#     :return: function that actually performs actions.
+#     """
 
-    @app.on_event('startup')
-    async def _startup() -> None:
-        # cred = credentials.Certificate("/path/to/cred/file")
-        # firebase_admin.initialize_app()
-        pass
-    return _startup
+#     @app.on_event('startup')
+#     async def _startup() -> None:
+#         # cred = credentials.Certificate("/path/to/cred/file")
+#         # firebase_admin.initialize_app()
+#         pass
+#     return _startup
 
 
-def register_shutdown_event(app: FastAPI) -> Callable[[], Awaitable[None]]:
-    """Actions to run on app's shutdown.
+# def register_shutdown_event(app: FastAPI) -> Callable[[], Awaitable[None]]:
+#     """Actions to run on app's shutdown.
 
-    :param app: fastAPI app.
-    :return: function that actually performs actions.
-    """
+#     :param app: fastAPI app.
+#     :return: function that actually performs actions.
+#     """
 
-    @app.on_event("shutdown")
-    async def _shutdown() -> None:
-        pass
+#     @app.on_event("shutdown")
+#     async def _shutdown() -> None:
+#         pass
 
-    return _shutdown
+#     return _shutdown
 # Define SQLModel classes
 class AiTool(SQLModel,table=True):
     __tablename__ = "aitool"
