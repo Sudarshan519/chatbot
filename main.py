@@ -101,7 +101,7 @@ def get_session():
     with Session(engine) as session:
         yield session
 
-templates=Jinja2Templates(directory='')
+templates=Jinja2Templates(directory='templates')
 @app.get('/')
 def chat(request: Request):
     return templates.TemplateResponse(
@@ -204,11 +204,11 @@ def deleteall(session:Session=Depends(get_session),#current_user:AdminUser=Depen
 def read_current_user(username: Annotated[str, Depends(get_current_user_from_bearer)]):
     return {"username": username}
 
-@app.on_event("startup")
-async def on_startup():  
-    print("start up complete")
+# @app.on_event("startup")
+# async def on_startup():  
+#     print("start up complete")
 
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='127.0.0.1', port=8000,reload=True)
