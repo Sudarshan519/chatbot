@@ -7,7 +7,7 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.routing import APIRouter
 import uvicorn
 
-from ai_tools_app.get_user import get_current_username,get_current_user_from_bearer
+# from ai_tools_app.get_user import get_current_username,get_current_user_from_bearer
 from ai_tools_app.models.user import AdminUser
 from ai_tools_app.core.config import settings
 app = FastAPI()
@@ -200,9 +200,9 @@ def deleteall(session:Session=Depends(get_session),#current_user:AdminUser=Depen
     return {"message": "Items deleted successfully"}
 
 
-@app.get("/users/me")
-def read_current_user(username: Annotated[str, Depends(get_current_user_from_bearer)]):
-    return {"username": username}
+# @app.get("/users/me")
+# def read_current_user(username: Annotated[str, Depends(get_current_user_from_bearer)]):
+#     return {"username": username}
 
 # @app.on_event("startup")
 # async def on_startup():  
