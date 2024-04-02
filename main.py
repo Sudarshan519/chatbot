@@ -1,7 +1,8 @@
 import json
-from fastapi import FastAPI, File, HTTPException, Depends, UploadFile
+from fastapi import FastAPI, File, HTTPException, Depends, Request, UploadFile
 from typing import Annotated, Dict, List, Optional
 from fastapi.security import HTTPBasic
+from fastapi.templating import Jinja2Templates
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.routing import APIRouter
 
@@ -97,6 +98,13 @@ SQLModel.metadata.create_all(engine)
 def get_session():
     with Session(engine) as session:
         yield session
+
+templates=Jinja2Templates(directory='')
+@app.get('/')
+def chat(request: Request):
+    return templates.TemplateResponse(
+        "index.html",{"request": request}
+    )
 @app.get("/aitools/all/", response_model=List[AiTool])
 async def all_tools(session: Session = Depends(get_session)):
     return session.exec(select(AiTool)).all()
