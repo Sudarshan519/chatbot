@@ -76,11 +76,11 @@ class AiTool(SQLModel,table=True):
     company_description: str
     referrenceId:str
     # category_id: str
-class AiAdmin(SQLModel,table=True):
-    __table__="ai_admin"
-    id:Optional[int]= Field(default=None, primary_key=True)
-    email:str
-    password:str
+# class AiAdmin(SQLModel,table=True):
+#     __table__="ai_admin"
+#     id:Optional[int]= Field(default=None, primary_key=True)
+#     email:str
+#     password:str
 class AiToolModel(BaseModel):
     # id: Optional[int] = Field(default=None, primary_key=True)
     result: str="string"
