@@ -40,7 +40,7 @@ class Settings:
     TEST_USER_EMAIL = "test@example.com"  #new
     CELERY_BROKER_URL: str = os.environ.get("CELERY_BROKER_URL","redis://127.0.0.1:6379/0")
     CELERY_RESULT_BACKEND: str = os.environ.get("CELERY_RESULT_BACKEND","redis://127.0.0.1:6379/0")
-
+    FIREBASE_API_KEY:str=os.environ.get("FIREBASE_API_KEY")
     JWT_PUBLIC_KEY:str=os.environ.get("JWT_PUBLIC_KEY")
     EXTERNALPGURL:str=os.environ.get("EXTERNALPGURL")
 # @AuthJWT.load_config

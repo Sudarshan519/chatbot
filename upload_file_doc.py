@@ -24,7 +24,7 @@ firebase_admin.initialize_app(cred, {
 
 # config = read_config()
 FIREBASE_STORAGE_BUCKET = "rock-star-tools-25g0k7.appspot.com"#config["FIREBASE_STORAGE_BUCKET"]
-FIREBASE_API_KEY = "AIzaSyD4R8PD1XH6L3Ea7wvdqKE2jtk_RhmlNYw"#config["FIREBASE_API_KEY"]
+FIREBASE_API_KEY = settings.FIREBASE_API_KEY#config["FIREBASE_API_KEY"]
 
 async def upload_image(image: UploadFile = File(...)):
     try:
