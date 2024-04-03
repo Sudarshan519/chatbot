@@ -1,18 +1,21 @@
+ 
 import json
-from fastapi import FastAPI, File, HTTPException, Depends, Request, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Depends, Request, UploadFile
 from typing import Annotated, Dict, List, Optional
 from fastapi.security import HTTPBasic
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.routing import APIRouter
 import uvicorn
 
 # from ai_tools_app.get_user import get_current_username,get_current_user_from_bearer
 from ai_tools_app.models.user import AdminUser
-from ai_tools_app.core.config import settings
-app = FastAPI()
-
-security = HTTPBasic()
+from ai_tools_app.core.config import settings 
+from upload_file_doc import  download_file, upload_image, upload_image_to_firebase
+app = FastAPI(title="Rockstar API")
+from datetime import datetime
+# security = HTTPBasic()
 
 
 """Template App
@@ -73,11 +76,49 @@ class AiTool(SQLModel,table=True):
     company_description: str
     referrenceId:str
     # category_id: str
-    
-
-    class Config:
-        orm_mode = True
-        
+class AiAdmin(SQLModel,table=True):
+    __table__="ai_admin"
+    id:Optional[int]= Field(default=None, primary_key=True)
+    email:str
+    password:str
+class AiToolModel(BaseModel):
+    # id: Optional[int] = Field(default=None, primary_key=True)
+    result: str="string"
+    user_email: str="string"
+    company_name: str="string"
+    name: str="string"
+    main_category: str="string"
+    company_URL: str="string"
+    linkedin_URL: str="string"
+    category: str="string"
+    message: str="string"
+    twitter_URL: str="string"
+    pricing: str="string"
+    image: str="string"
+    company_description: str="string"
+    referrenceId:str="string"
+    img: UploadFile=None
+    # class Config:
+    #     from_attributes = True
+    #     populate_by_name = True
+    #     arbitrary_types_allowed = False 
+class AiToolModelUpdate(BaseModel):
+    # id: Optional[int] = Field(default=None, primary_key=True)
+    result: str=None
+    user_email: str=None
+    company_name: str=None
+    name: str=None
+    main_category: str=None
+    company_URL: str=None
+    linkedin_URL: str=None
+    category: str=None
+    message: str=None
+    twitter_URL: str=None
+    pricing: str=None
+    image: str=None
+    company_description: str=None
+    referrenceId:str=None
+    img: UploadFile=None        
 # SQLite Database URL
 # SQLModel setup
 DATABASE_URL =settings.POSTGRES_URL# "sqlite:///./t.db"
@@ -151,27 +192,61 @@ async def get_tools_by_id(item_id: int, session: Session = Depends(get_session))
         raise HTTPException(status_code=404, detail="Item not found")
     return item
 # CRUD operations
-@app.post("/aitools/", response_model=AiTool,)
-async def create_item(item: AiTool,image:UploadFile =File(...), session: Session = Depends(get_session),
+@app.post("/aitools/create",  )
+async def create_item(item:AiToolModel=Depends(AiToolModel), session: Session = Depends(get_session),
                      # current_user:AdminUser=Depends(get_current_user_from_bearer),
                       ):
+    print(item)
+    image_url=None
+    if item.img: 
+        try: 
+         image_url=await upload_image(item.img) 
+
+        except HTTPException as e:
+            return f"{e}"
+        
+        
+        item.image=image_url['image_url']
+ 
     session.add(item)
     session.commit()
     session.refresh(item)
-    return item
+    return item 
 
 
 
 
 
 @app.put("/aitools/{item_id}", response_model=AiTool)
-async def update_tool(item_id: int, item: AiTool, session: Session = Depends(get_session), 
+async def update_tool(item_id: int, item: AiToolModelUpdate=Depends(AiToolModelUpdate), session: Session = Depends(get_session), 
                       #current_user:AdminUser=Depends(get_current_user_from_bearer)
                       ):
+    
     db_item = session.get(AiTool, item_id)
+    print(db_item)
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
-    for var_name, value in vars(item).items():
+    data=item.dict()
+    print(data)
+    if item.img:
+        del data['img'] 
+        try: 
+         image_url=await upload_image(item.img) 
+
+        except HTTPException as e:
+            return f"{e}"
+        print(image_url)
+        
+        data['image']=image_url['image_url']
+
+    
+    # Filter out keys where the value is None
+    filtered_dict = {key: value for key, value in data.items() if value is not None}
+    print(filtered_dict)
+ 
+    for var_name, value in filtered_dict.items():
+        print(var_name)
+        print(value)
         setattr(db_item, var_name, value)
     session.add(db_item)
     session.commit()

@@ -25,7 +25,7 @@ class Settings:
     MySQL_USER_PYTHON= os.getenv("MYSQL_USER_PYTHON")
     MySQL_PASSWORD_PYRHON=os.getenv("PASSWORD_PYTHON")
     MySQL_SERVER_PYTHON : str = os.getenv("MYSQL_HOST_PYTHON","localhost")
- 
+    API_KEY:str=os.getenv("API_KEY")
     MySQL_DB_PYTHON=os.getenv("DATABASE_PYTHON")
     DATABASE_URL_PYTHON =f"mysql+mysqlconnector://SudarshanShresth:Asmir123@Sudarshanshrestha.mysql.pythonanywhere-services.com:3306/SudarshanShresth$default" #POSTGRES_URL
     # DATABASE_URL =POSTGRES_URL
