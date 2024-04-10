@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from fastapi.routing import APIRouter
 import uvicorn
-
+from fastapi.middleware.cors import CORSMiddleware
 # from ai_tools_app.get_user import get_current_username,get_current_user_from_bearer
 from ai_tools_app.models.user import AdminUser
 from ai_tools_app.core.config import settings 
