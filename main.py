@@ -14,6 +14,15 @@ from ai_tools_app.models.user import AdminUser
 from ai_tools_app.core.config import settings 
 from upload_file_doc import  download_file, upload_image, upload_image_to_firebase
 app = FastAPI(title="Rockstar API")
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 from datetime import datetime
 # security = HTTPBasic()
 
