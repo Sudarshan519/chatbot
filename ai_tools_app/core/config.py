@@ -7,7 +7,7 @@ env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 class Settings:
-    SQLITE_URL: str="sqlite:///ntest.db"#"sqlite:///db/ntest.db"#+aiosqlite
+    SQLITE_URL: str="sqlite:///mnntest.db"#"sqlite:///db/ntest.db"#+aiosqlite
     PROJECT_NAME:str = "Job Board"
     PROJECT_VERSION: str = "1.0.0"
     MONGODB_URI:   str = os.getenv("MONGODB_URI")

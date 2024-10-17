@@ -130,7 +130,7 @@ class AiToolModelUpdate(BaseModel):
     img: UploadFile=None        
 # SQLite Database URL
 # SQLModel setup
-DATABASE_URL =settings.POSTGRES_URL# "sqlite:///./t.db"
+DATABASE_URL =settings.SQLITE_URL# "sqlite:///./t.db"
 engine = create_engine(DATABASE_URL)
 SQLModel.metadata.create_all(engine)
 
@@ -162,8 +162,8 @@ async def all_tools(session: Session = Depends(get_session)):
     return session.exec(select(AiTool)).all()
 
 
-# @app.get('/export')
-# def export_fireabse_json(session: Session = Depends(get_session)):
+@app.get('/export')
+def export_fireabse_json(session: Session = Depends(get_session)):
     aitools=[]
     index=1
     with open('backup.json', "r") as file:
@@ -172,14 +172,14 @@ async def all_tools(session: Session = Depends(get_session)):
         
         session.add(AiTool(            
             result=item_data["result"] or "",
-            user_email=item_data["user_email"] or "",
+            user_email= "",
             company_name=item_data["company_name"] or "",
-            name=item_data["name"] or "",
+            name="",
             main_category=item_data["main_category"] or "",
             company_URL=item_data["company_URL"] or "",
             linkedin_URL=item_data["linkedin_URL"] or "",
             category=item_data["category"] or "",
-            message=item_data["message" ] or "",
+            message= "",
             twitter_URL=item_data["twitter_URL"] or "" ,
             pricing=item_data["pricing"] or "",
             image=item_data["image"] or "",
@@ -236,7 +236,7 @@ async def update_tool(item_id: int, item: AiToolModelUpdate=Depends(AiToolModelU
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
     data=item.dict()
-    print(data)
+    # print(data)
     if item.img:
         del data['img'] 
         try: 
